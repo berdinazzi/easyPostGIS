@@ -1,10 +1,13 @@
 Package: easyPostgreSQL
-Type: Package
-Title: Wrappers around SQL commands for PostgreSQL/PostGIS databases
 Version: 0.1
 Date: 2016-07-17
+Title: Wrappers around SQL commands for PostgreSQL/PostGIS databases
+Authors@R: c(person("Bruno", "Silva", role = c("aut", "cre"),
+  	     email = "bmsasilva@gmail.com"),
+	      person("Giovanni", "Manghi", role = "aut"))
 Author: Bruno Silva [aut, cre],
   Giovanni Manghi [aut]
-Maintainer: Bruno Silva <bsilva at uevora.pt>
+Maintainer: Bruno Silva <bmsasilva@gmail.com>
+Depends: R (>= 3.1.0), RPostgreSQL, rgdal
 Description: Wrappers around most used SQL commands for interacting with PostgreSQL/PostGIS databases. Allows R users with no SQL knowledge to perform server-side operations on spatial data.
-License: What license is it under?
+License: GPL (>= 2)
