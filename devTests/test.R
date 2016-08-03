@@ -1,4 +1,4 @@
-con <- dbConnectPG('tempdbase')
+con <- dbConnectPG("tempdbase")
 
 dbListTables(con[[1]])
 ogrListLayers(con[[2]])

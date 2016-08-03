@@ -1,6 +1,3 @@
-library(RPostgreSQL)
-library(rgdal)
-
 dbConnectPG <- function(dbname,
                         host = 'localhost',
                         port = '5432',
