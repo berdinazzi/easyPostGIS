@@ -1,5 +1,5 @@
 checkGeom <- function(con, vecTable) {
-  ##Funtion to check which table column is geometric
+  ##Funtion to check which table column(s) is geometric
   fields <- RPostgreSQL::dbListFields(con[[1]], vecTable)
   
   # Desabilitar erros e warnings

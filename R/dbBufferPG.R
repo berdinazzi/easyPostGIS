@@ -1,5 +1,8 @@
-dbBufferPG <- function(con, vecTable, dist, newTable = FALSE) {
-  geom <- checkGeom(con, vecTable)
+dbBufferPG <- function(con, vecTable, geom = NULL, dist, newTable = FALSE) {
+  
+  if (is.null(geom)) geom <- checkGeom(con, vecTable)
+      
+  if(length(geom) > 1) stop(paste0("Multiple geometries found. Please choose between: ", geom))
   
   if (newTable == FALSE)  {
     query <-
