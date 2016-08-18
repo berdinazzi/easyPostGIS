@@ -1,3 +1,15 @@
+#' Connect to a postgreSQL database going through the appropriate authorization procedure
+#' @export
+#' @title Create a connection to a postgreSQL database
+#' @name dbConnectPG
+#' @param dbname name
+#' @param host host
+#' @param port port
+#' @param user user
+#' @param password password
+#' @return An object of class 'connectPG'. This object is used to direct commands to the database engine.
+#' @author Bruno Silva
+
 dbConnectPG <- function(dbname,
                         host = 'localhost',
                         port = '5432',
@@ -18,7 +30,7 @@ dbConnectPG <- function(dbname,
   # )
   
   #Ligacao a postgres so com nome da database para testes. Tenho de resolver isto depois
-  try(connect <- RPostgreSQL::dbConnect(dbDriver('PostgreSQL'),
+  try(connect <- RPostgreSQL::dbConnect(RPostgreSQL::PostgreSQL(),
                                         dbname = dbname,
                                         host = host,
                                         port = port),
@@ -27,13 +39,22 @@ dbConnectPG <- function(dbname,
   
   # Verificar a conexao
   if (!exists('connect')) 
-    stop('Could not establish connection with the database. Review connection information.',
+    stop('Could not establish connection with the database.',
          call. = FALSE)
   
   # Ligacao a Post
- if(!is.null(port)) {port_aux <- ' port=' } else {port_aux <- NULL}
-  if(!is.null(user)) {user_aux <- ' user=' } else {user_aux <- NULL}
-  if(!is.null(password)) {password_aux <- ' password=' } else {password_aux <- NULL}
+ if(!is.null(port)) {port_aux <- ' port=' 
+ } else {
+   port_aux <- NULL
+ }
+  if(!is.null(user)) {user_aux <- ' user=' 
+  } else {user_aux <- NULL
+  }
+  if(!is.null(password)) {
+    password_aux <- ' password=' 
+  } else {
+    password_aux <- NULL
+  }
   
  dns <-  paste0('PG:' 
          , ' dbname=', dbname 
@@ -41,16 +62,24 @@ dbConnectPG <- function(dbname,
          , user_aux, user 
          , password_aux, password)
   
-  # Ligacao a postgres
-  try(test <- ogrListLayers(dns),
+  # Ligacao a postgis
+  try(test <- rgdal::ogrListLayers(dns),
       silent = TRUE
   )
 
   # Verificar a conexao
   if (!exists('test')) 
-    stop('Could not establish connection with postGIS. PostGIS extension probably not installed.',
+    stop('Could not establish connection with postGIS.',
          call. = FALSE)
   
- list(con = connect, dns = dns)
+ out <- list(con = connect, dns = dns)
+ class(out) <- 'connectPG'
+
+ return(out)
 
 } # end function
+
+print.connectPG <- function(con){
+  conAtributes <- strsplit(con[[2]], " ")[[1]][-1]  
+  cat(conAtributes[1])
+}

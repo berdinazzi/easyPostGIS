@@ -6,8 +6,14 @@ Authors@R: c(person("Bruno", "Silva", role = c("aut", "cre"),
   	     email = "bmsasilva@gmail.com"),
 	      person("Giovanni", "Manghi", role = "aut"))
 Author: Bruno Silva [aut, cre],
-  Giovanni Manghi [aut]
+    Giovanni Manghi [aut]
 Maintainer: Bruno Silva <bmsasilva@gmail.com>
-Depends: R (>= 3.1.0), RPostgreSQL, rgdal
-Description: Wrappers around most used SQL commands for interacting with PostgreSQL/PostGIS databases. Allows R users with no SQL knowledge to perform server-side operations on spatial data.
+Depends:
+    R (>= 3.1.0),
+    RPostgreSQL,
+    rgdal
+Description: Wrappers around most used SQL commands for interacting with
+    PostgreSQL/PostGIS databases. Allows R users with no SQL knowledge to perform
+    server-side operations on spatial data.
 License: GPL (>= 2)
+RoxygenNote: 5.0.1

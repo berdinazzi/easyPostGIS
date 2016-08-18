@@ -1,4 +1,4 @@
 getShape <- function(con, vecTable){
-  shape <- readOGR(dsn = con[[2]], vecTable)
+  shape <- rgdal::readOGR(dsn = con[[2]], vecTable)
   return(shape)
 }
