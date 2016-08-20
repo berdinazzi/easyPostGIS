@@ -1,25 +1,25 @@
-\name{easyPostgreSQL-package}
-\alias{easyPostgreSQL-package}
-\alias{easyPostgreSQL}
+\name{easyPostGIS-package}
+\alias{easyPostGIS-package}
+\alias{easyPostGIS}
 \docType{package}
 \title{
-\packageTitle{easyPostgreSQL}
+\packageTitle{easyPostGIS}
 }
 \description{
-\packageDescription{easyPostgreSQL}
+\packageDescription{easyPostGIS}
 }
 \details{
 
 The DESCRIPTION file:
-\packageDESCRIPTION{easyPostgreSQL}
-\packageIndices{easyPostgreSQL}
+\packageDESCRIPTION{easyPostGIS}
+\packageIndices{easyPostGIS}
 ~~ An overview of how to use the package, including the most ~~
 ~~ important functions ~~
 }
 \author{
-\packageAuthor{easyPostgreSQL}
+\packageAuthor{easyPostGIS}
 
-Maintainer: \packageMaintainer{easyPostgreSQL}
+Maintainer: \packageMaintainer{easyPostGIS}
 }
 \references{
 ~~ Literature or other references for background information ~~

@@ -10,7 +10,7 @@
 #' @author Bruno Silva
 sendShape <- function(con, folder, layer, pgLayer = NULL){
   if(is.null(pgLayer)) pgLayer = layer
-  writeOGR(readOGR(folder, layer), 
+  rgdal::writeOGR(rgdal::readOGR(folder, layer), 
            driver = "PostgreSQL",
            dsn = con[[2]],
            layer = pgLayer)
