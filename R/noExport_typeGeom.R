@@ -6,7 +6,7 @@
 #' @return The type of the geometry as a string. For example: "LINESTRING", "POLYGON", etc.
 #' @author Bruno Silva
 typeGeom <- function(con, vecTable){
-  if(class(con)!= 'connectPG') stop('An object of class "connectPG" is required to connect with the database')
+  if(class(con)!= 'pgConnect') stop('An object of class "pgConnect" is required to connect with the database')
   colGeom <- checkGeom(con, vecTable)
   query <- sprintf('SELECT GeometryType(%s) FROM %s', colGeom, vecTable)
   type <- RPostgreSQL::dbGetQuery(con[[1]], query)
