@@ -79,7 +79,7 @@ pgConnect <- function(dbname,
 
 } # end function
 
-print.connectPG <- function(con){
+print.pgConnect <- function(con){
   conAtributes <- strsplit(con[[2]], " ")[[1]][-1]  
   cat(conAtributes[1])
 }
