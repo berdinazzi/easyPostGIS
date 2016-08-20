@@ -1,16 +1,16 @@
 #' Connect to a postgreSQL database going through the appropriate authorization procedure
 #' @export
 #' @title Create a connection to a postgreSQL database
-#' @name dbConnectPG
+#' @name pgConnect
 #' @param dbname name
 #' @param host host
 #' @param port port
 #' @param user user
 #' @param password password
-#' @return An object of class 'connectPG'. This object is used to direct commands to the database engine.
+#' @return An object of class 'pgConnect'. This object is used to direct commands to the database engine.
 #' @author Bruno Silva
 
-dbConnectPG <- function(dbname,
+pgConnect <- function(dbname,
                         host = 'localhost',
                         port = '5432',
                         user = NULL,
@@ -73,7 +73,7 @@ dbConnectPG <- function(dbname,
          call. = FALSE)
   
  out <- list(con = connect, dns = dns)
- class(out) <- 'connectPG'
+ class(out) <- 'pgConnect'
 
  return(out)
 
