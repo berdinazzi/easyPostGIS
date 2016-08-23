@@ -1,4 +1,4 @@
-con <- dbConnectPG("tempdbase")
+con <- pgConnect("tempdbase")
 
 dbListTables(con[[1]])
 ogrListLayers(con[[2]])
@@ -27,3 +27,5 @@ pgPerimeter(con,'ae_ac')
 checkGeom(con, 'linhas')
 checkGeom(con, 'ae_ac')
 typeGeom(con, 'linhas')
+
+cent <- pgCentroid (con, 'linhas', geom = NULL, newTable = NULL)
