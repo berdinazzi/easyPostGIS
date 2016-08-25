@@ -3,6 +3,7 @@
 export(getShape)
 export(pgArea)
 export(pgBuffer)
+export(pgCentroid)
 export(pgConnect)
 export(pgLength)
 export(pgPerimeter)

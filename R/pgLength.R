@@ -9,19 +9,21 @@
 #' @return A data.frame with the length of each object in the original table
 #' @author Bruno Silva
 pgLength <- function(con, vecTable, geom = NULL, addColumn = FALSE){     
-    if (is.null(geom)) geom <- checkGeom(con, vecTable)   
-    if(length(geom) > 1) stop(paste0("Multiple geometries found. Please choose between: ", geom))   
-    pattern <- typeGeom(con, vecTable) == c('MULTILINESTRING', 'LINESTRING')    
-    if(sum(pattern) == 0) stop(paste0('Only Lines or Multilines geometries allowed'))
-if (addColumn == TRUE)  { 
-  query <- sprintf("ALTER TABLE %s ADD COLUMN length double precision;
-               UPDATE %s SET area=ST_LENGTH(%s);", vecTable, vecTable, geom)
-  RPostgreSQL::dbSendQuery(con[[1]], query) 
-  query <- sprintf("SELECT length FROM %s", vecTable)
-  tableLength <- RPostgreSQL::dbGetQuery(con[[1]], query)
-} else {
-  query <- sprintf("SELECT ST_LENGTH(%s) FROM %s", geom, vecTable)
-  tableLength <- RPostgreSQL::dbGetQuery(con[[1]], query)
-}   
-    return(tableLength)
-  }
+  if (is.null(geom)) geom <- checkGeom(con, vecTable)   
+  if(length(geom) > 1) stop(paste0("Multiple geometries found. Please choose between: ", geom))   
+  pattern <- typeGeom(con, vecTable) == c('MULTILINESTRING', 'LINESTRING')    
+  if(sum(pattern) == 0) stop(paste0('Only Lines or Multilines geometries allowed'))
+  if (addColumn == TRUE)  { 
+    sprintf("ALTER TABLE %s ADD COLUMN length double precision; UPDATE %s SET area=ST_LENGTH(%s);",
+            vecTable, vecTable, geom) %>%
+      RPostgreSQL::dbSendQuery(con[[1]], . ) 
+    tableLength <- sprintf("SELECT length FROM %s", vecTable)  %>%
+      RPostgreSQL::dbGetQuery(con[[1]], . )
+  } else {
+    #query <- sprintf("SELECT ST_LENGTH(%s) FROM %s", geom, vecTable)
+    #tableLength <- RPostgreSQL::dbGetQuery(con[[1]], query)
+    tableLength <- sprintf("SELECT ST_LENGTH(%s) FROM %s", geom, vecTable) %>%
+      RPostgreSQL::dbGetQuery(con[[1]], . )
+  }   
+  return(tableLength)
+}

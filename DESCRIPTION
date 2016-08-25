@@ -11,7 +11,8 @@ Maintainer: Bruno Silva <bmsasilva@gmail.com>
 Depends:
     R (>= 3.1.0),
     RPostgreSQL,
-    rgdal
+    rgdal,
+    magrittr
 Description: Wrappers around most used SQL commands for interacting with
     PostgreSQL/PostGIS databases. Allows R users with no SQL knowledge to perform
     server-side operations on spatial data.
