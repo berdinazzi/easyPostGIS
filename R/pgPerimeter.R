@@ -17,10 +17,12 @@ pgPerimeter <- function(con, vecTable, geom = NULL, addColumn = FALSE){
     sprintf("ALTER TABLE %s ADD COLUMN perimeter double precision;
                UPDATE %s SET perimeter=ST_PERIMETER(%s);", vecTable, vecTable, geom) %>%
       RPostgreSQL::dbSendQuery(con[[1]], .) 
-    tablePerimeter <- sprintf("SELECT perimeter FROM %s", vecTable) %>%
+    tablePerimeter <- 
+      sprintf("SELECT perimeter FROM %s", vecTable) %>%
       RPostgreSQL::dbGetQuery(con[[1]], .)
   } else {
-    tablePerimeter <- sprintf("SELECT ST_PERIMETER(%s) FROM %s", geom, vecTable) %>%
+    tablePerimeter <- 
+      sprintf("SELECT ST_PERIMETER(%s) FROM %s", geom, vecTable) %>%
       RPostgreSQL::dbGetQuery(con[[1]], query)
   }   
   return(tablePerimeter)
