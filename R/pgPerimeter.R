@@ -9,19 +9,19 @@
 #' @return A data.frame with the perimeter of each object in the original table
 #' @author Bruno Silva
 pgPerimeter <- function(con, vecTable, geom = NULL, addColumn = FALSE){     
-    if (is.null(geom)) geom <- checkGeom(con, vecTable)   
-    if(length(geom) > 1) stop(paste0("Multiple geometries found. Please choose between: ", geom))   
-    pattern <- typeGeom(con, vecTable) == c('POLYGON', 'MULTIPOLYGON')    
-    if(sum(pattern) == 0) stop(paste0('Only Polygons or Multipolygons geometries allowed'))
-if (addColumn == TRUE)  { 
-  query <- sprintf("ALTER TABLE %s ADD COLUMN perimeter double precision;
-               UPDATE %s SET perimeter=ST_PERIMETER(%s);", vecTable, vecTable, geom)
-  RPostgreSQL::dbSendQuery(con[[1]], query) 
-  query <- sprintf("SELECT perimeter FROM %s", vecTable)
-  tablePerimeter <- RPostgreSQL::dbGetQuery(con[[1]], query)
-} else {
-  query <- sprintf("SELECT ST_PERIMETER(%s) FROM %s", geom, vecTable)
-  tablePerimeter <- RPostgreSQL::dbGetQuery(con[[1]], query)
-}   
-    return(tablePerimeter)
-  }
+  if (is.null(geom)) geom <- checkGeom(con, vecTable)   
+  if(length(geom) > 1) stop(paste0("Multiple geometries found. Please choose between: ", geom))   
+  typeGeom(con, vecTable) == c('POLYGON', 'MULTIPOLYGON') %>% 
+    if(sum(.) == 0) stop(paste0('Only Polygons or Multipolygons geometries allowed'))
+  if (addColumn == TRUE)  { 
+    sprintf("ALTER TABLE %s ADD COLUMN perimeter double precision;
+               UPDATE %s SET perimeter=ST_PERIMETER(%s);", vecTable, vecTable, geom) %>%
+      RPostgreSQL::dbSendQuery(con[[1]], .) 
+    tablePerimeter <- sprintf("SELECT perimeter FROM %s", vecTable) %>%
+      RPostgreSQL::dbGetQuery(con[[1]], .)
+  } else {
+    tablePerimeter <- sprintf("SELECT ST_PERIMETER(%s) FROM %s", geom, vecTable) %>%
+      RPostgreSQL::dbGetQuery(con[[1]], query)
+  }   
+  return(tablePerimeter)
+}
