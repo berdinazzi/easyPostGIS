@@ -9,7 +9,7 @@ dbListFields(con[[1]], 'linhas')
 checkGeom(con, 'ae_ac')
 typeGeom(con, 'ae_ac')
 
-sendShape(con,folder='data/', layer='pontos_AC_amostrados', pgLayer = 'pontos')
+sendShape(con,folder='data/', layer='pontos_AC_amostrados', pgLayer = 'lixo')
 RPostgreSQL::dbRemoveTable(con[[1]], 'pontos_ac_amostrados')
 
 newBuf <- pgBuffer(con, 'ae_ac', dist=50)

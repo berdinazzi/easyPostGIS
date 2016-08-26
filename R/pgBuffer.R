@@ -14,15 +14,15 @@ pgBuffer <- function(con, vecTable, geom = NULL, dist, newTable = NULL) {
   if(length(geom) > 1) stop(paste0("Multiple geometries found. Please choose between: ",
                                    geom))
   if (is.null(newTable))  {
-    query <- sprintf("SELECT ST_Buffer(%s, %i, 'quad_segs=8') INTO temptable FROM %s",
-                     geom, dist, vecTable)
-    RPostgreSQL::dbSendQuery(con[[1]], query)
+    sprintf("SELECT ST_Buffer(%s, %i, 'quad_segs=8') INTO temptable FROM %s",
+                     geom, dist, vecTable) %>%
+    RPostgreSQL::dbSendQuery(con[[1]], .)
     shape <- rgdal::readOGR(dsn = con[[2]], 'temptable')
     RPostgreSQL::dbRemoveTable(con[[1]], 'temptable')
   } else {
-    query <- sprintf("SELECT ST_Buffer(%s, %i, 'quad_segs=8') INTO %s FROM %s",
-                    geom, dist, newTable, vecTable)
-    RPostgreSQL::dbSendQuery(con[[1]], query)
+    sprintf("SELECT ST_Buffer(%s, %i, 'quad_segs=8') INTO %s FROM %s",
+                    geom, dist, newTable, vecTable) %>%
+    RPostgreSQL::dbSendQuery(con[[1]], .)
     shape <- rgdal::readOGR(dsn = con[[2]], newTable)
   }
   return(shape)

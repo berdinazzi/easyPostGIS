@@ -7,8 +7,9 @@
 #' @author Bruno Silva
 typeGeom <- function(con, vecTable){
   if(class(con)!= 'pgConnect') stop('An object of class "pgConnect" is required to connect with the database')
-  colGeom <- checkGeom(con, vecTable)
-  query <- sprintf('SELECT GeometryType(%s) FROM %s', colGeom, vecTable)
-  type <- RPostgreSQL::dbGetQuery(con[[1]], query)
+  type <- 
+    checkGeom(con, vecTable) %>%
+    sprintf('SELECT GeometryType(%s) FROM %s', ., vecTable) %>%
+    RPostgreSQL::dbGetQuery(con[[1]], .)
   return(as.character(unique(type)))
 }

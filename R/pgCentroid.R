@@ -13,15 +13,15 @@ pgCentroid <- function(con, vecTable, geom = NULL, newTable = NULL) {
   if(length(geom) > 1) stop(paste0("Multiple geometries found. Please choose between: ",
                                    geom))
   if (is.null(newTable))  {
-    query <- sprintf("SELECT ST_CENTROID(%s) INTO temptable FROM %s",
-                     geom, vecTable)
-    RPostgreSQL::dbSendQuery(con[[1]], query)
+    sprintf("SELECT ST_CENTROID(%s) INTO temptable FROM %s",
+                     geom, vecTable) %>%
+    RPostgreSQL::dbSendQuery(con[[1]], .)
     shape <- rgdal::readOGR(dsn = con[[2]], 'temptable')
     RPostgreSQL::dbRemoveTable(con[[1]], 'temptable')
   } else {
-    query <- sprintf("SELECT ST_CENTROID(%s) INTO %s FROM %s",
-                    geom, newTable, vecTable)
-    RPostgreSQL::dbSendQuery(con[[1]], query)
+    sprintf("SELECT ST_CENTROID(%s) INTO %s FROM %s",
+                    geom, newTable, vecTable) %>%
+    RPostgreSQL::dbSendQuery(con[[1]], .)
     shape <- rgdal::readOGR(dsn = con[[2]], newTable)
   }
   return(shape)

@@ -10,14 +10,9 @@ checkGeom <- function(con, vecTable) {
   options(show.error.messages = FALSE, warn = -1) # Desabilitar erros e warnings
   data <- data.frame(fields = fields, geom = FALSE)
   for (i in seq(fields)) {
-    query <-
-      paste0(
-        'SELECT ST_GeometryType(',
-        fields[i],
-        ') FROM ',
-        vecTable
-      )
-    try(test <- RPostgreSQL::dbGetQuery(con[[1]], query))
+    sprintf("SELECT ST_GeometryType(%s) FROM vecTable",
+            fields[i], vecTable) %>%
+      try(test <- RPostgreSQL::dbGetQuery(con[[1]], .))
     if (!is.null(test)) {
       data$geom[i] <- TRUE
       remove(test)
