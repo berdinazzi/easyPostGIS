@@ -16,71 +16,37 @@ pgConnect <- function(dbname,
                         user = NULL,
                         password = NULL) 
 { 
-  # Funcao para guardar os dados a conexao a base de dados e
-  # testar as ligacoes
-  
-  # Ligacao a postgres com user e password
-  # try(connect <- RPostgreSQL::dbConnect(dbDriver('PostgreSQL'),
-  #                       dbname = dbname,
-  #                       host = host,
-  #                       port = port,
-  #                       user = user,
-  #                       password = password),
-  #      silent = TRUE
-  # )
-  
-  #Ligacao a postgres so com nome da database para testes. Tenho de resolver isto depois
-  try(connect <- RPostgreSQL::dbConnect(RPostgreSQL::PostgreSQL(),
-                                        dbname = dbname,
-                                        host = host,
-                                        port = port),
-      silent = TRUE
-  )
-  
-  # Verificar a conexao
+  ## Testar a ligacao postgres
+  args <- 
+    list(drv = RPostgreSQL::PostgreSQL(), dbname = dbname, host = host, port = port, user = user, password = password) %>%
+    .[unlist(lapply(., length) != 0)] # Eliminate NULL components from args list
+  try(connect <- do.call(RPostgreSQL::dbConnect, args),
+       silent = TRUE)
+  # Verificar a validade da conexao postgres
   if (!exists('connect')) 
     stop('Could not establish connection with the database.',
          call. = FALSE)
-  
-  # Ligacao a Post
- if(!is.null(port)) {port_aux <- ' port=' 
- } else {
-   port_aux <- NULL
- }
-  if(!is.null(user)) {user_aux <- ' user=' 
-  } else {user_aux <- NULL
-  }
-  if(!is.null(password)) {
-    password_aux <- ' password=' 
+  ## Testar a ligacao postgis
+  if(is.null(user)) {
+    dns <- sprintf("PG: dbname=%s host=%s port=%s", args$dbname, args$host, args$port)
   } else {
-    password_aux <- NULL
+    dns <- sprintf("PG: dbname=%s host=%s port=%s user=%s password=%s", args$dbname, args$host, args$port, args$user, args$password)
   }
-  
- dns <-  paste0('PG:' 
-         , ' dbname=', dbname 
-         , port_aux, port
-         , user_aux, user 
-         , password_aux, password)
-  
-  # Ligacao a postgis
   try(test <- rgdal::ogrListLayers(dns),
-      silent = TRUE
-  )
-
-  # Verificar a conexao
+      silent = TRUE)
+  # Verificar a validade da conexao postgres
   if (!exists('test')) 
     stop('Could not establish connection with postGIS.',
          call. = FALSE)
-  
+  ## Function Output
  out <- list(con = connect, dns = dns)
  class(out) <- 'pgConnect'
-
- return(out)
-
-} # end function
+return(out)
+} 
 
 #' @export
 print.pgConnect <- function(con){
-  conAtributes <- strsplit(con[[2]], " ")[[1]][-1]  
-  cat(conAtributes[1])
+  conAtributes <- strsplit(con[[2]], " ")[[1]][-1]
+  for (i in seq(conAtributes))
+  cat(conAtributes[i], '\n')
 }
