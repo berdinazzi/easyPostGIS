@@ -12,7 +12,7 @@ pgLength <- function(con, vecTable, geom = NULL, addColumn = FALSE){
   if (is.null(geom)) geom <- checkGeom(con, vecTable)   
   if(length(geom) > 1) stop(paste0("Multiple geometries found. Please choose between: ", geom))   
   typeGeom(con, vecTable) == c('MULTILINESTRING', 'LINESTRING') %>%   
-  if(sum(.) == 0) stop(paste0('Only Lines or Multilines geometries allowed'))
+    if(sum(.) == 0) stop(paste0('Only Lines or Multilines geometries allowed'))
   if (addColumn == TRUE)  { 
     sprintf("ALTER TABLE %s ADD COLUMN length double precision; UPDATE %s SET area=ST_LENGTH(%s);",
             vecTable, vecTable, geom) %>%

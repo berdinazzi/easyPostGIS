@@ -11,17 +11,17 @@
 #' @author Bruno Silva
 
 pgConnect <- function(dbname,
-                        host = 'localhost',
-                        port = '5432',
-                        user = NULL,
-                        password = NULL) 
+                      host = 'localhost',
+                      port = '5432',
+                      user = NULL,
+                      password = NULL) 
 { 
   ## Testar a ligacao postgres
   args <- 
     list(drv = RPostgreSQL::PostgreSQL(), dbname = dbname, host = host, port = port, user = user, password = password) %>%
     .[unlist(lapply(., length) != 0)] # Eliminate NULL components from args list
   try(connect <- do.call(RPostgreSQL::dbConnect, args),
-       silent = TRUE)
+      silent = TRUE)
   # Verificar a validade da conexao postgres
   if (!exists('connect')) 
     stop('Could not establish connection with the database.',
@@ -39,14 +39,14 @@ pgConnect <- function(dbname,
     stop('Could not establish connection with postGIS.',
          call. = FALSE)
   ## Function Output
- out <- list(con = connect, dns = dns)
- class(out) <- 'pgConnect'
-return(out)
+  out <- list(con = connect, dns = dns)
+  class(out) <- 'pgConnect'
+  return(out)
 } 
 
 #' @export
 print.pgConnect <- function(con){
   conAtributes <- strsplit(con[[2]], " ")[[1]][-1]
   for (i in seq(conAtributes))
-  cat(conAtributes[i], '\n')
+    cat(conAtributes[i], '\n')
 }

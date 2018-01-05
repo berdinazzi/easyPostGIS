@@ -14,14 +14,14 @@ pgCentroid <- function(con, vecTable, geom = NULL, newTable = NULL) {
                                    geom))
   if (is.null(newTable))  {
     sprintf("SELECT ST_CENTROID(%s) INTO temptable FROM %s",
-                     geom, vecTable) %>%
-    RPostgreSQL::dbSendQuery(con[[1]], .)
+            geom, vecTable) %>%
+      RPostgreSQL::dbSendQuery(con[[1]], .)
     shape <- rgdal::readOGR(dsn = con[[2]], 'temptable')
     RPostgreSQL::dbRemoveTable(con[[1]], 'temptable')
   } else {
     sprintf("SELECT ST_CENTROID(%s) INTO %s FROM %s",
-                    geom, newTable, vecTable) %>%
-    RPostgreSQL::dbSendQuery(con[[1]], .)
+            geom, newTable, vecTable) %>%
+      RPostgreSQL::dbSendQuery(con[[1]], .)
     shape <- rgdal::readOGR(dsn = con[[2]], newTable)
   }
   return(shape)

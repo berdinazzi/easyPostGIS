@@ -15,14 +15,14 @@ pgBuffer <- function(con, vecTable, geom = NULL, dist, newTable = NULL) {
                                    geom))
   if (is.null(newTable))  {
     sprintf("SELECT ST_Buffer(%s, %i, 'quad_segs=8') INTO temptable FROM %s",
-                     geom, dist, vecTable) %>%
-    RPostgreSQL::dbSendQuery(con[[1]], .)
+            geom, dist, vecTable) %>%
+      RPostgreSQL::dbSendQuery(con[[1]], .)
     shape <- rgdal::readOGR(dsn = con[[2]], 'temptable')
     RPostgreSQL::dbRemoveTable(con[[1]], 'temptable')
   } else {
     sprintf("SELECT ST_Buffer(%s, %i, 'quad_segs=8') INTO %s FROM %s",
-                    geom, dist, newTable, vecTable) %>%
-    RPostgreSQL::dbSendQuery(con[[1]], .)
+            geom, dist, newTable, vecTable) %>%
+      RPostgreSQL::dbSendQuery(con[[1]], .)
     shape <- rgdal::readOGR(dsn = con[[2]], newTable)
   }
   return(shape)

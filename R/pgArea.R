@@ -9,19 +9,19 @@
 #' @return A data.frame with the area of each object in the original table
 #' @author Bruno Silva
 pgArea <- function(con, vecTable, geom = NULL, addColumn = FALSE){     
-    if (is.null(geom)) geom <- checkGeom(con, vecTable)   
-    if(length(geom) > 1) stop(paste0("Multiple geometries found. Please choose between: ", geom))   
-    typeGeom(con, vecTable) == c('POLYGON', 'MULTIPOLYGON') %>% 
+  if (is.null(geom)) geom <- checkGeom(con, vecTable)   
+  if(length(geom) > 1) stop(paste0("Multiple geometries found. Please choose between: ", geom))   
+  typeGeom(con, vecTable) == c('POLYGON', 'MULTIPOLYGON') %>% 
     if(sum(.) == 0) stop(paste0('Only Polygons or Multipolygons geometries allowed'))
-if (addColumn == TRUE)  { 
-  sprintf("ALTER TABLE %s ADD COLUMN area double precision;
+  if (addColumn == TRUE)  { 
+    sprintf("ALTER TABLE %s ADD COLUMN area double precision;
                UPDATE %s SET area=ST_AREA(%s);", vecTable, vecTable, geom) %>%
-  RPostgreSQL::dbSendQuery(con[[1]], .) 
-  sprintf("SELECT area FROM %s", vecTable) %>%
-  tableArea <- RPostgreSQL::dbGetQuery(con[[1]], .)
-} else {
-  sprintf("SELECT ST_AREA(%s) FROM %s", geom, vecTable) %>%
-  tableArea <- RPostgreSQL::dbGetQuery(con[[1]], .)
-}   
-    return(tableArea)
-  }
+      RPostgreSQL::dbSendQuery(con[[1]], .) 
+    sprintf("SELECT area FROM %s", vecTable) %>%
+      tableArea <- RPostgreSQL::dbGetQuery(con[[1]], .)
+  } else {
+    sprintf("SELECT ST_AREA(%s) FROM %s", geom, vecTable) %>%
+      tableArea <- RPostgreSQL::dbGetQuery(con[[1]], .)
+  }   
+  return(tableArea)
+}
